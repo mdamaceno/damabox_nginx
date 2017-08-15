@@ -10,7 +10,8 @@ RUN mkdir -p /etc/nginx/sites-available
 
 COPY ./config/nginx/nginx.conf /etc/nginx/nginx.conf
 
-RUN mkdir /app
+RUN mkdir -p /app
+RUN mkdir -p /logs
 
 WORKDIR /app
 
