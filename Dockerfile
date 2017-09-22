@@ -41,12 +41,20 @@ RUN mkdir -p /etc/nginx/conf/sites-available
 
 COPY ./config/nginx/nginx.conf /etc/nginx/conf/nginx.conf
 
+COPY ./scripts/nginx.sh .
+
+RUN mv /nginx.sh /etc/init.d && mv /etc/init.d/nginx.sh /etc/init.d/nginx && chmod a+x /etc/init.d/nginx
+
 RUN apt-get -y install nodejs
 
 RUN mkdir -p /var/log/nginx/
 
 RUN mkdir /app
 
+COPY ./scripts/run.sh .
+
+RUN chmod a+x /run.sh
+
 WORKDIR /app
 
-CMD /etc/nginx/sbin/nginx -g 'daemon off;'
+CMD ["/run.sh"]
