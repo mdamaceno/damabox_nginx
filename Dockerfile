@@ -37,7 +37,7 @@ RUN /bin/bash -l -c "passenger-install-nginx-module --auto --auto-download --pre
 
 RUN /bin/bash -l -c 'gem install bundler'
 
-RUN mkdir -p /etc/nginx/conf/sites-available
+RUN mkdir -p /etc/nginx/conf/sites-available /etc/ssl/certs /etc/ssl/private /var/log/nginx/ /app
 
 COPY ./config/nginx/nginx.conf /etc/nginx/conf/nginx.conf
 
@@ -47,14 +47,9 @@ RUN mv /nginx.sh /etc/init.d && mv /etc/init.d/nginx.sh /etc/init.d/nginx && chm
 
 RUN apt-get -y install nodejs
 
-RUN mkdir -p /var/log/nginx/
-
-RUN mkdir /app
-
-COPY ./scripts/run.sh .
-
-RUN chmod a+x /run.sh
-
 WORKDIR /app
 
-CMD ["/run.sh"]
+EXPOSE 80
+EXPOSE 443
+
+CMD /etc/nginx/sbin/nginx -g 'daemon off;'
